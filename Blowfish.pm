@@ -35,7 +35,7 @@ package Crypt::Blowfish;
 use strict;
 use vars qw($VERSION);
 
-$VERSION="1.00";
+$VERSION="1.01";
 
 =head2 B<new>(I<key>)
 
@@ -451,6 +451,16 @@ sub decrypt
 	$r^=$self->{"p_boxes"}->[0];
 
 	return pack("NN",$r,$l);
+	}
+
+sub blocksize
+	{
+	return 8;
+	}
+
+sub keysize
+	{
+	return 18;
 	}
 
 =head1 COMMENTS
