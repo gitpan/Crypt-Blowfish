@@ -10,7 +10,7 @@ require DynaLoader;
 bootstrap Crypt::Blowfish;
 
 
-
+use Benchmark qw(timediff timestr);
 use strict;
 use Carp;
 
@@ -170,23 +170,111 @@ my $cipher = new Crypt::Blowfish $key;
 print "not " unless ($cipher->encrypt($in) eq $out);
 print "ok 10\n";
 
+{
+	print "\nRunning standard mode speed tests.. encrypting with non-cached cipher\n";
+	my $t0 = new Benchmark;
+
+	for(1..5000){
+		my $key = pack("H*", "0101010101010101");
+		my $in  = pack("H*", "0123456789ABCDEF");
+		my $out = pack("H*", "FA34EC4847B268B2");
+
+		my $cipher = new Crypt::Blowfish $key;
+		$cipher->encrypt($in);
+	}
+
+	my $t1 = new Benchmark;
+	my $td = Benchmark::timediff($t1,$t0);
+	my $ts = Benchmark::timestr($td);
+
+	print "5,000 cycles: $ts\n";
+
+}; # end standard mode (encrypt) speed test non-cached cipher
+
+{
+        print "\nRunning standard mode speed tests.. decrypting with non-cached cipher\n";
+        my $t0 = new Benchmark;
+
+        for(1..5000){
+                my $key = pack("H*", "0101010101010101");
+                my $in  = pack("H*", "0123456789ABCDEF");
+                my $out = pack("H*", "FA34EC4847B268B2");
+
+                my $cipher = new Crypt::Blowfish $key;
+                $cipher->decrypt($out);
+        }
+
+        my $t1 = new Benchmark;
+        my $td = Benchmark::timediff($t1,$t0);
+        my $ts = Benchmark::timestr($td);
+
+        print "5,000 cycles: $ts\n";
+
+}; # end standard mode (decrypt) speed test non-cached cipher
+
+
+my $key = pack("H*", "0101010101010101");
+my $cipher = new Crypt::Blowfish $key;
+{
+        print "\nRunning standard mode speed tests.. encrypting with cached cipher\n";
+        my $t0 = new Benchmark;
+
+        for(1..10000){
+                my $in  = pack("H*", "0123456789ABCDEF");
+                my $out = pack("H*", "FA34EC4847B268B2");
+
+                $cipher->encrypt($in);
+        }
+
+        my $t1 = new Benchmark;
+        my $td = Benchmark::timediff($t1,$t0);
+        my $ts = Benchmark::timestr($td);
+
+        print "10,000 cycles: $ts\n";
+
+
+}; # end standard mode (encrypt) speed test cached cipher
+
+{
+        print "\nRunning standard mode speed tests.. decrypting with cached cipher\n";
+        my $t0 = new Benchmark;
+
+        for(1..10000){
+                my $in  = pack("H*", "0123456789ABCDEF");
+                my $out = pack("H*", "FA34EC4847B268B2");
+
+                $cipher->decrypt($out);
+        }
+
+        my $t1 = new Benchmark;
+        my $td = Benchmark::timediff($t1,$t0);
+        my $ts = Benchmark::timestr($td);
+
+        print "10,000 cycles: $ts\n";
+
+
+}; # end standard mode (decrypt) speed test cached cipher
+
+
 print "\nTesting Cipher Block Chaining..\n";
-eval {
-	use Crypt::CBC;
-};
-if($Crypt::CBC::VERSION < 1.22) { $@ = "CBC mode requires Crypt::CBC version 1.22 or higher." }
-else {
+eval 'use Crypt::CBC';
 
-my $cipher = new Crypt::CBC(pack("H*","0123456789ABCDEFF0E1D2C3B4A59687"),"Blowfish");
-my $ciphertext = $cipher->encrypt(pack("H*","37363534333231204E6F77206973207468652074696D6520666F722000"));
-my $plaintext  = $cipher->decrypt($ciphertext);
+if(!$@) {
+	if($Crypt::CBC::VERSION < 1.22) { 
+		$@ = "CBC mode requires Crypt::CBC version 1.22 or higher."; 
+	} else {
 
-print "DEC: $plaintext\n";
-print "Should read:  7654321 Now is the time for \n";
-print "ok 11 - CBC Mode\n";
-}
+		my $cipher = new Crypt::CBC(pack("H*","0123456789ABCDEFF0E1D2C3B4A59687"),"Blowfish");
+		my $ciphertext = $cipher->encrypt(pack("H*","37363534333231204E6F77206973207468652074696D6520666F722000"));
+		my $plaintext  = $cipher->decrypt($ciphertext);
+
+		print "DEC: $plaintext\n";
+		print "Should read:  7654321 Now is the time for \n";
+		print "ok 11 - CBC Mode\n";
+	}
+} # end no errors
 
 if($@) {
-	print "Error: $@\n";
+	print "Error (probably harmless):\n$@\n";
 }
 

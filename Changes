@@ -1,5 +1,14 @@
 Revision history for Perl extension Crypt::Blowfish.
 
+2.02  Sun Feb 13 21:49:58 2000
+	- added speed tests, fixed HP-UX functionality
+	- cleaned up code
+	- added README
+
+2.01  Fri Feb 11 19:35:27 2000
+	- solidified XS support and extracted
+	from original package.
+
 2.00  Sun Sep  5 21:07:48 1999
 	- original version; created by h2xs 1.19
 

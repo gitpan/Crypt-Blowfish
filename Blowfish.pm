@@ -2,6 +2,7 @@ package Crypt::Blowfish;
 
 require Exporter;
 require DynaLoader;
+use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 
 @ISA = qw(Exporter DynaLoader);
 # @ISA = qw(Exporter DynaLoader Crypt::BlockCipher);
@@ -12,10 +13,8 @@ require DynaLoader;
 # Other items we are prepared to export if requested
 @EXPORT_OK =	qw();
 
-my $VERSION = '2.01';
+$VERSION = '2.02';
 bootstrap Crypt::Blowfish $VERSION;
-
-package Blowfish;
 
 use strict;
 use Carp;
@@ -158,10 +157,12 @@ Crypt::Blowfish has been tested B<successfully> against the following:
 	Solaris 2.7 SPARC
 	FreeBSD 3.4
 	FreeBSD 3.3
+	HP-UX B.10.20 (using HP's cc)
 
 Crypt::Blowfish has been tested and B<failed> against the following:
 
 	FreeBSD 3.2
+	Win32
 
 =head1 NOTES
 
@@ -194,9 +195,9 @@ Current revision and maintainer:  Dave Paris <amused@pobox.com>
 
 =head1 THANKS
 
-To my wonderful wife for her patience.  To EFNet #perl, to infobot #perl,
-to the folks that helped test this module.  And a special thanks to my
-friends for guidance and support.  Perl couldn't have had this CPAN
-strong-crypto module without ya'll!
+To my wonderful wife for her patience & love.  To EFNet #perl, to 
+infobot #perl, to the folks that helped test this module.  A special 
+thanks to my friends for guidance and support.  Perl couldn't have 
+had this CPAN strong-crypto, C-based module without ya'll!
 
 

@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
 	'NAME' => 'Crypt::Blowfish',
 	'DISTNAME' => 'Crypt-Blowfish',
-	'VERSION' => '2.01',
+	'VERSION_FROM' => 'Blowfish.pm',
 	'OBJECT' => 'Blowfish.o blowfish.o',
 	'dist'   => {COMPRESS=>'gzip', SUFFIX=>'gz'}
 );

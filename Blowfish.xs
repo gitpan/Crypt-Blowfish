@@ -60,7 +60,9 @@ blowfish_crypt(input, output, ks, dir)
 		if (!SvUPGRADE(output, SVt_PV))
 			croak("cannot use output argument as lvalue");
 
-		blowfish_crypt_8bytes(input, SvGROW(output, 8), ks, dir);
+		/* blowfish_crypt_8bytes(input, SvGROW(output, 8), ks, dir); */
+		/* HP-UX (HP cc) fix below, thanks Addi! */
+		blowfish_crypt_8bytes( (unsigned char*)input, (unsigned char*)SvGROW(output, 8), ks, (short)dir);
 
 		SvCUR_set(output, output_len);
 		*SvEND(output) = '\0';
