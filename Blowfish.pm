@@ -11,9 +11,12 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 @EXPORT =	qw();
 
 # Other items we are prepared to export if requested
-@EXPORT_OK =	qw();
+@EXPORT_OK =	qw(
+	blocksize keysize min_keysize max_keysize
+	new encrypt decrypt
+);
 
-$VERSION = '2.06';
+$VERSION = '2.08';
 bootstrap Crypt::Blowfish $VERSION;
 
 use strict;
@@ -27,8 +30,10 @@ sub usage
 }
 
 
-sub blocksize { 8; }
-sub keysize { 0; } 
+sub blocksize   {  8; } # /* byte my shiny metal.. */
+sub keysize     {  8; } # /* we'll leave this at 8 .. for now.  expect change. */
+sub min_keysize {  8; }
+sub max_keysize { 56; }  
 
 sub new
 {
@@ -80,28 +85,25 @@ Crypt::Blowfish - Perl Blowfish encryption module
 
 =head1 SYNOPSIS
 
-    use Crypt::Blowfish;
-    
-Blowfish is capable of strong encryption and can use key sizes up 
-to 56 bytes (a 448 bit key).  You're encouraged to take advantage 
-of the full key size to ensure the strongest encryption possible 
-from this module.
-
+  use Crypt::Blowfish;
+  my $cipher = new Crypt::Blowfish $key; 
+  my $ciphertext = $cipher->encrypt($plaintext);
+  my $plaintext  = $cipher->decrypt($ciphertext);
 
 =head1 DESCRIPTION
 
-The module implements the Crypt::CBC interface.  You're encouraged
-to read the perldoc for Crypt::CBC if you intend to use this module
-for Cipher Block Chaining.
+Blowfish is capable of strong encryption and can use key sizes up
+to 56 bytes (a 448 bit key).  You're encouraged to take advantage
+of the full key size to ensure the strongest encryption possible
+from this module.
 
-Crypt::CBC has the following methods:
+Crypt::Blowfish has the following methods:
 
 =over 4
 
-=item blocksize
-=item keysize
-=item encrypt
-=item decrypt
+ blocksize()
+ encrypt()
+ decrypt()
 
 =back
 
@@ -113,16 +115,16 @@ Crypt::CBC has the following methods:
 
 Returns the size (in bytes) of the block cipher.
 
-=item keysize
-
-Returns the size (in bytes) of the key.
+Crypt::Blowfish doesn't return a key size due to its ability
+to use variable-length keys. (well, more accurately, it won't
+as of 2.09 .. for now, it does.  expect that to change)
 
 =item new
 
 	my $cipher = new Crypt::Blowfish $key;
 
 This creates a new Crypt::Blowfish BlockCipher object, using $key,
-where $key is a key of C<keysize()> bytes.
+where $key is a key of C<keysize()> bytes (minimum of eight bytes).
 
 =item encrypt
 
@@ -130,7 +132,8 @@ where $key is a key of C<keysize()> bytes.
 	my $ciphertext = $cipher->encrypt($plaintext);
 
 This function encrypts $plaintext and returns the $ciphertext
-where $plaintext and $ciphertext should be of C<blocksize()> bytes.
+where $plaintext and $ciphertext must be of C<blocksize()> bytes.
+(hint:  Blowfish is an 8 byte block cipher)
 
 =item decrypt
 
@@ -138,35 +141,40 @@ where $plaintext and $ciphertext should be of C<blocksize()> bytes.
 	my $plaintext = $cipher->decrypt($ciphertext);
 
 This function decrypts $ciphertext and returns the $plaintext
-where $plaintext and $ciphertext should be of C<blocksize()> bytes.
+where $plaintext and $ciphertext must be of C<blocksize()> bytes.
+(hint:  see previous hint)
 
 =back
 
 =head1 EXAMPLE
 
-	my $key = pack("H16", "0123456789ABCDEF");
+	my $key = pack("H16", "0123456789ABCDEF");  # min. 8 bytes
 	my $cipher = new Crypt::Blowfish $key;
-	my $ciphertext = $cipher->encrypt("plaintex");	# NB - 8 bytes
+	my $ciphertext = $cipher->encrypt("plaintex");	# SEE NOTES 
 	print unpack("H16", $ciphertext), "\n";
 
 =head1 PLATFORMS
 
-Crypt::Blowfish has been tested B<successfully> against the following:
-
-	Linux 2.2.X (RH6.X, Mandrake 6.5)
-	Solaris 2.7 SPARC
-	FreeBSD 3.4
-	FreeBSD 3.3
-	HP-UX B.10.20 (using HP's cc)
-
-Crypt::Blowfish has been tested and B<failed> against the following:
-
-	FreeBSD 3.2
-	Win32
+	Please see the README document for platforms and performance
+	tests.
 
 =head1 NOTES
 
-To use the CBC mode, you B<must> use Crypt::CBC version 1.22 or higher.
+The module is capable of being used with Crypt::CBC.  You're
+encouraged to read the perldoc for Crypt::CBC if you intend to
+use this module for Cipher Block Chaining modes.  In fact, if
+you have any intentions of encrypting more than eight bytes of
+data with this, or any other block cipher, you're going to need
+B<some> type of block chaining help.  Crypt::CBC tends to be
+very good at this.  If you're not going to encrypt more than 
+eight bytes, your data B<must> be B<exactly> eight bytes long.
+If need be, do your own padding. "\0" as a null byte is perfectly
+valid to use for this.  Additionally, the current maintainer for 
+Crypt::Blowfish may or may not release Crypt::CBC_R which 
+replaces the default 'RandomIV' initialization vector in 
+Crypt::CBC with a random initialization vector.  (to the limits 
+of /dev/urandom and associates)  In either case, please email
+amused@pobox.com for Crypt::CBC_R.
 
 =head1 SEE ALSO
 
@@ -181,29 +189,18 @@ published by John Wiley & Sons, Inc.
 
 The implementation of the Blowfish algorithm was developed by,
 and is copyright of, A.M. Kuchling.
+
 Other parts of the perl extension and module are
-copyright of Systemics Ltd ( http://www.systemics.com/ ). Code
-revisions, updates, and standalone release is the copyright
-of W3Works, LLC.
+copyright of Systemics Ltd ( http://www.systemics.com/ ). 
+
+Code revisions, updates, and standalone release are copyright
+1999-2001 W3Works, LLC.
 
 =head1 AUTHOR
 
-Original algorithm, Bruce Shneier.  Original implimentation, A.M.
-Kuchling.  Original Perl impilmentation, Systemics Ltd.
+Original algorithm, Bruce Shneier.  Original implementation, A.M.
+Kuchling.  Original Perl implementation, Systemics Ltd.  Current
+maintenance by W3Works, LLC.
 
 Current revision and maintainer:  Dave Paris <amused@pobox.com>
-
-=head1 THANKS
-
-To my wonderful wife for her patience & love.  To EFNet #perl, to 
-infobot #perl, to the folks that helped test this module.  A special 
-thanks to my friends for guidance and support.  Perl couldn't have 
-had this module without ya'll.
-
-
-
-
-
-
-
 

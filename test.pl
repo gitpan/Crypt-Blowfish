@@ -119,9 +119,6 @@ my $out = pack("H*", "F21E9A77B71C49BC");
 
 my $cipher = new Crypt::Blowfish $key;
 
-my $unpk = unpack("H*", ($cipher->decrypt($out)));
-print "DEP: $unpk  <-- should be 0000000000000000\n";
-
 print "not " unless ($cipher->decrypt($out) eq $in);
 print "ok 5\n";
 
@@ -268,9 +265,13 @@ if(!$@) {
 		my $ciphertext = $cipher->encrypt(pack("H*","37363534333231204E6F77206973207468652074696D6520666F722000"));
 		my $plaintext  = $cipher->decrypt($ciphertext);
 
-		print "DEC: $plaintext\n";
-		print "Should read:  7654321 Now is the time for \n";
+		if($plaintext eq "7654321 Now is the time for \0") {
 		print "ok 11 - CBC Mode\n";
+		} else {
+		print unpack("H*",$plaintext) . " :decrypted\n";
+		print unpack("H*","7654321 Now is the time for \0") . " :orig\n";
+		print "not ok 11 - CBC Mode failed\n";
+		}
 	}
 } # end no errors
 

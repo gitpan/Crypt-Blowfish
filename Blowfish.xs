@@ -12,7 +12,9 @@
 #include "blowfish.h"
 
 /*  thanks to LDS */
+#ifndef sv_undef
 #define sv_undef PL_sv_undef
+#endif
 
 MODULE = Crypt::Blowfish		PACKAGE = Crypt::Blowfish		PREFIX = blowfish_
 
@@ -21,7 +23,7 @@ PROTOTYPES: DISABLE
  
 char *
 blowfish_init(key)
-	char *	key = NO_INIT
+	unsigned char *	key = NO_INIT
 	STRLEN	key_len = NO_INIT
     CODE:
 	{
@@ -30,7 +32,7 @@ blowfish_init(key)
 		*/
 		char ks[8192];
 
-		key = (char *) SvPV(ST(0), key_len);
+		key = (unsigned char *) SvPV(ST(0), key_len);
 		if (key_len < 8 || key_len > 56)
 			croak("Invalid length key");
 
