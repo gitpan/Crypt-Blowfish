@@ -16,7 +16,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 	new encrypt decrypt
 );
 
-$VERSION = '2.08';
+$VERSION = '2.09';
 bootstrap Crypt::Blowfish $VERSION;
 
 use strict;
@@ -31,7 +31,7 @@ sub usage
 
 
 sub blocksize   {  8; } # /* byte my shiny metal.. */
-sub keysize     {  8; } # /* we'll leave this at 8 .. for now.  expect change. */
+sub keysize     {  0; } # /* we'll leave this at 8 .. for now.  expect change. */
 sub min_keysize {  8; }
 sub max_keysize { 56; }  
 
@@ -75,7 +75,7 @@ sub decrypt
 __END__
 #
 # Parts Copyright (C) 1995, 1996 Systemics Ltd (http://www.systemics.com/)
-# New Parts Copyright (C) 2000 W3Works, LLC (http://www.w3works.com/)
+# New Parts Copyright (C) 2000, 2001 W3Works, LLC (http://www.w3works.com/)
 # All rights reserved.
 #
 
@@ -102,6 +102,7 @@ Crypt::Blowfish has the following methods:
 =over 4
 
  blocksize()
+ keysize()
  encrypt()
  decrypt()
 
