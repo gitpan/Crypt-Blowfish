@@ -7,7 +7,7 @@ WriteMakefile(
 	'NAME' => 'Crypt::Blowfish',
 	'DISTNAME' => 'Crypt-Blowfish',
 	'VERSION_FROM' => 'Blowfish.pm',
-	'OBJECT' => 'Blowfish.o blowfish.o',
+	'OBJECT' => 'Blowfish.o _blowfish.o',
 	'dist'   => {COMPRESS=>'gzip', SUFFIX=>'gz'}
 );
 

@@ -5,7 +5,7 @@ MANIFEST
 README
 Changes
 Makefile.PL
-blowfish.c
+_blowfish.c
 blowfish.h
 test.pl
 typemap

@@ -1,5 +1,20 @@
 Revision history for Perl extension Crypt::Blowfish.
 
+2.06  Tue Jul 04 15:35:34 2000
+	- Win32 tested using VC++5.0, all tests passed on NT4/SP5
+
+2.05  Tue Jul 04 14:42:13 2000
+	- non-public
+	- code-cleanup
+	- initial Win32 support
+
+2.04  Wed May 17 21:42:54 2000
+	- non-public
+	- code cleanup
+
+2.03  Tue Feb 29 17:19:48 2000
+	- added small patch from LDS to Blowfish.xs
+
 2.02  Sun Feb 13 21:49:58 2000
 	- added speed tests, fixed HP-UX functionality
 	- cleaned up code

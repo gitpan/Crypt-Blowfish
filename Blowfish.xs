@@ -1,6 +1,7 @@
 /*
  *	Copyright (C) 1995, 1996 Systemics Ltd (http://www.systemics.com/)
- *      Copde Modfifications Copyright (C) 2000 W3Works, LLC (http://www.w3works.co/)
+ *
+ *      Code Modfifications Copyright (C) 2000 W3Works, LLC (http://www.w3works.co/)
  *	All rights reserved.
  */
 
@@ -9,6 +10,9 @@
 #include "XSUB.h"
 
 #include "blowfish.h"
+
+/*  thanks to LDS */
+#define sv_undef PL_sv_undef
 
 MODULE = Crypt::Blowfish		PACKAGE = Crypt::Blowfish		PREFIX = blowfish_
 

@@ -13,7 +13,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 # Other items we are prepared to export if requested
 @EXPORT_OK =	qw();
 
-$VERSION = '2.02';
+$VERSION = '2.06';
 bootstrap Crypt::Blowfish $VERSION;
 
 use strict;
@@ -198,6 +198,12 @@ Current revision and maintainer:  Dave Paris <amused@pobox.com>
 To my wonderful wife for her patience & love.  To EFNet #perl, to 
 infobot #perl, to the folks that helped test this module.  A special 
 thanks to my friends for guidance and support.  Perl couldn't have 
-had this CPAN strong-crypto, C-based module without ya'll!
+had this module without ya'll.
+
+
+
+
+
+
 
 

@@ -1,13 +1,15 @@
-This is Crypt::Blowfish version 2,02, an XS-based implementation of the
+This is Crypt::Blowfish version 2.06, an XS-based implementation of the
 Blowfish cryptography algorithm designed by Bruce Schneier.  It's designed
-to take full advantage of Crypt::CBC 1.22 when desired.  Blowfish keys 
-may be up to 448 bits (56 bytes) long.
+to take full advantage of Crypt::CBC when desired.  Blowfish keys may be
+up to 448 bits (56 bytes) long.  This module builds on nearly every platform
+that Perl itself does (see Notes for exceptions).
 
 Prerequisites
 -------------
 
-For the full test suite to run, Crypt::CBC, version 1.22 is required,
-however this module is not mandatory for standalone Blowfish use.
+For the full test suite to run, Crypt::CBC, version 1.22 or higher
+is required (recommended is 1.25 or higher), however this module 
+is not mandatory for standalone Blowfish use.
 
 Installing Crypt::Blowfish
 --------------------------
@@ -23,16 +25,21 @@ Notes
 -----
 
 This module has been tested successfully against the following:
+Linux 2.0.X (x86)
 Linux 2.2.X (x86, PPC, Alpha, m68k)
 Solaris 2.5.1 and 2.7 (SPARC)
-FreeBSD 3.3 and 3.4
+FreeBSD 3.3 and 3.4 (x86), 4.0 (alpha)
 HP-UX B.10.20
+DEC OSF 5.0
 AIX spbuild 3 4
+Win32 (NT4/SP5)
+
+Perl 5.004_01, 5.004_04, and 5.005_03
 
 Please send other successful OS/platform combinations to:
 amused@pobox.com . Thanks.
 
-Patches for Win32, VMS, and MacOS welcomed.
+Patches for VMS, and MacOS welcomed.
 
 Being an XS implimentation, Crypt::Blowfish is exceptionally faster
 than v1.01 (a pure Perl implimentation).  Internal testing displayed
@@ -43,6 +50,8 @@ tests below)
 
 In the case where this module won't build for you, please try the
 Crypt::Blowfish_PP module - a Pure Perl implimentation.
+
+Thanks to Thomas Kratz for the Win32 fixup.
 
 Performance
 -----------
@@ -135,6 +144,22 @@ Running standard mode speed tests.. encrypting with cached cipher
 
 Running standard mode speed tests.. decrypting with cached cipher
 10,000 cycles:  7 wallclock secs ( 7.37 usr +  0.04 sys =  7.41 CPU)
+
+
+Typical results for x86/PPro (dual 200Mhz PPro) Windows machine:
+Under  Perl-5.005_02
+Running standard mode speed tests.. encrypting with non-cached cipher
+5,000 cycles: 8 wallclock secs ( 8.27 usr +  0.00 sys =  8.27 CPU)
+
+Running standard mode speed tests.. decrypting with non-cached cipher
+5,000 cycles: 9 wallclock secs ( 8.25 usr +  0.00 sys =  8.25 CPU)
+
+Running standard mode speed tests.. encrypting with cached cipher
+10,000 cycles:  0 wallclock secs ( 0.69 usr +  0.00 sys =  0.69 CPU)
+
+Running standard mode speed tests.. decrypting with cached cipher
+10,000 cycles:  1 wallclock secs ( 0.69 usr +  0.00 sys =  0.69 CPU)
+
 
 
 Dave Paris - W3Works, LLC
