@@ -1,0 +1,16 @@
+Crypt::Blowfish
+===============
+
+Blowfish is a published algorithm written by Bruce Schneier
+(http://www.counterpane.com/). Unlike IDEA or DES etc. there are no patent
+implications in using this algorithm.
+
+It uses anywhere between a 64 bit and a 144 bit key. The transform itself is
+fast and operates on a 64 bit block, and most of the calculation time is in
+initialising the context with the key data.
+
+This implementation is entirely object oriented, and entirely written in Perl.
+The perl form is (c) copyright Matthew Byng-Maddick <matthew@codix.net>, and
+the actual structure and static data are copyright Bruce Schneier.
+
+The licensing is GPL or Artistic at your preference.
