@@ -1,5 +1,10 @@
-MANIFEST
-Makefile.PL
+COPYRIGHT
 Blowfish.pm
-README
-t/blowfish.t
+Blowfish.xs
+MANIFEST
+Changes
+Makefile.PL
+blowfish.c
+blowfish.h
+test.pl
+typemap
