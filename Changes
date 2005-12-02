@@ -1,4 +1,9 @@
 Revision history for Perl extension Crypt::Blowfish.
+2.10  Fri Dec 02 07:36:18 EST 2005
+	- updated the README file to remove the reference
+	  to CBC_R - no longer available.
+	- updated the README file to include performance
+	  results for G4/1.2GHz PPC Mac OS X 10.4.X
 
 2.09  Tue Nov 13 01:28:26 EST 2001
 	- changed keysize back to 0
