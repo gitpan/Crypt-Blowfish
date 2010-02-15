@@ -16,20 +16,19 @@
 /* File: bf.c
    Blowfish cipher by Bruce Schneier,
    Code by Bryan Olson, based partly on Schneier's.
+   Improvements and ongoing mantenance by Dave Paris
 */
 
+#include <string.h>
 
 /* Define IntU32 to be an unsigned in 32 bits long */
 typedef unsigned int IntU32 ;
 typedef unsigned char IntU8 ;
 #define NROUNDS         16
 
-
-
 /* Define IntP to be an integer which
    is the same size as a pointer. */
 typedef unsigned long IntP ;
-
 
 typedef struct
 {
@@ -324,8 +323,6 @@ static IntU32  s_init[4][256] = {
        r ^= ( (sub(S[0],l>>22 & 0x3fc) + sub(S[1],l>>14 & 0x3fc)) \
 	      ^ sub(S[2],l>>6 & 0x3fc) ) +S[3][l & 0xff] 
 
-
-
 /* This function requires the block to be two 32 bit integers, in 
 whatever endian form the machine uses.  On little endian machines 
 use crypt_8bytes() on user data.  make_bfkey should call crypt_block
@@ -425,7 +422,7 @@ blowfish_make_bfkey(key_string, keylength, bfkey)
    /* Test init data. */
    if( checksum != 0x55861a61 )
      {
-       strcpy((char *)bfkey, "Bad initialization data");
+       strncpy((char *)bfkey, "Bad initialization data",24);
        return -1;
      }
 
@@ -440,10 +437,9 @@ blowfish_make_bfkey(key_string, keylength, bfkey)
      crypt_block( dspace, bfkey, 1 ) ;
    if( (checksum!=0xaafe4ebd) || dspace[0] || dspace[1] )
      {
-		strcpy((char *)bfkey, "Error in crypt_block routine");
+		strncpy((char *)bfkey, "Error in crypt_block routine",29);
        return -1;
      }
-
    
    /* Xor key string into encryption key vector */
    j = 0 ;
@@ -455,7 +451,6 @@ blowfish_make_bfkey(key_string, keylength, bfkey)
 	   data = (data << 8) | key_string[j++ % keylength];
        (bfkey->p)[0][i] ^= data; 
      }
-
 
    for (i = 0 ; i<NROUNDS+2 ; i+=2) 
      {

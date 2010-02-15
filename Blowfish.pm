@@ -16,7 +16,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 	new encrypt decrypt
 );
 
-$VERSION = '2.10';
+$VERSION = '2.11';
 bootstrap Crypt::Blowfish $VERSION;
 
 use strict;
@@ -31,43 +31,32 @@ sub usage
 
 
 sub blocksize   {  8; } # /* byte my shiny metal.. */
-sub keysize     {  0; } # /* we'll leave this at 8 .. for now.  expect change. */
+sub keysize     {  0; } # /* we'll leave this at 8 .. for now. */
 sub min_keysize {  8; }
 sub max_keysize { 56; }  
 
 sub new
 {
 	usage("new Blowfish key") unless @_ == 2;
-
 	my $type = shift; my $self = {}; bless $self, $type;
-
 	$self->{'ks'} = Crypt::Blowfish::init(shift);
-
-	$self;
+	return $self;
 }
 
 sub encrypt
 {
 	usage("encrypt data[8 bytes]") unless @_ == 2;
-
-	my $self = shift;
-	my $data = shift;
-
+	my ($self,$data) = @_;
 	Crypt::Blowfish::crypt($data, $data, $self->{'ks'}, 0);
-
-	$data;
+	return $data;
 }
 
 sub decrypt
 {
 	usage("decrypt data[8 bytes]") unless @_ == 2;
-
-	my $self = shift;
-	my $data = shift;
-
+	my ($self,$data) = @_; 
 	Crypt::Blowfish::crypt($data, $data, $self->{'ks'}, 1);
-
-	$data;
+	return $data;
 }
 
 1;
@@ -75,7 +64,7 @@ sub decrypt
 __END__
 #
 # Parts Copyright (C) 1995, 1996 Systemics Ltd (http://www.systemics.com/)
-# New Parts Copyright (C) 2000, 2001 W3Works, LLC (http://www.w3works.com/)
+# New Parts Copyright (C) 1999, 2001 W3Works, LLC (http://www.w3works.com/)
 # All rights reserved.
 #
 
@@ -89,6 +78,9 @@ Crypt::Blowfish - Perl Blowfish encryption module
   my $cipher = new Crypt::Blowfish $key; 
   my $ciphertext = $cipher->encrypt($plaintext);
   my $plaintext  = $cipher->decrypt($ciphertext);
+
+  You probably want to use this in conjunction with 
+  a block chaining module like Crypt::CBC.
 
 =head1 DESCRIPTION
 
@@ -117,8 +109,8 @@ Crypt::Blowfish has the following methods:
 Returns the size (in bytes) of the block cipher.
 
 Crypt::Blowfish doesn't return a key size due to its ability
-to use variable-length keys. (well, more accurately, it won't
-as of 2.09 .. for now, it does.  expect that to change)
+to use variable-length keys.  More accurately, it shouldn't,
+but it does anyway to play nicely with others. 
 
 =item new
 
@@ -170,12 +162,7 @@ B<some> type of block chaining help.  Crypt::CBC tends to be
 very good at this.  If you're not going to encrypt more than 
 eight bytes, your data B<must> be B<exactly> eight bytes long.
 If need be, do your own padding. "\0" as a null byte is perfectly
-valid to use for this.  Additionally, the current maintainer for 
-Crypt::Blowfish may or may not release Crypt::CBC_R which 
-replaces the default 'RandomIV' initialization vector in 
-Crypt::CBC with a random initialization vector.  (to the limits 
-of /dev/urandom and associates)  In either case, please email
-amused@pobox.com for Crypt::CBC_R.
+valid to use for this. 
 
 =head1 SEE ALSO
 
@@ -195,7 +182,7 @@ Other parts of the perl extension and module are
 copyright of Systemics Ltd ( http://www.systemics.com/ ). 
 
 Code revisions, updates, and standalone release are copyright
-1999-2001 W3Works, LLC.
+1999-2010 W3Works, LLC.
 
 =head1 AUTHOR
 
