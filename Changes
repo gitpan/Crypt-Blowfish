@@ -1,4 +1,12 @@
 Revision history for Perl extension Crypt::Blowfish.
+
+2.12 04 Mar 2010
+	- updated Changes to mesh with revision.
+
+2.11  Feb 2010
+	- patched _blowfish.c to stop spurious warnings.
+	- updated POD
+
 2.10  Fri Dec 02 07:36:18 EST 2005
 	- updated the README file to remove the reference
 	  to CBC_R - no longer available.
