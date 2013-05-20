@@ -16,7 +16,9 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK);
 	new encrypt decrypt
 );
 
-$VERSION = '2.12';
+$VERSION = '2.12_001';
+$VESION = eval $VERSION; # Unauthorized (or dev) release.
+
 bootstrap Crypt::Blowfish $VERSION;
 
 use strict;

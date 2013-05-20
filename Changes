@@ -1,4 +1,7 @@
 Revision history for Perl extension Crypt::Blowfish.
+2.12_001 20 May 2010
+        - Apply patch from RT#83924 -- SvUPGRADE can't be used as a Boolean
+          expression.
 
 2.12 04 Mar 2010
 	- updated Changes to mesh with revision.

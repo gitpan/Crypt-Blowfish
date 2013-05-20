@@ -63,8 +63,7 @@ blowfish_crypt(input, output, ks, dir)
 			output = sv_newmortal();
 		output_len = 8;
 
-		if (!SvUPGRADE(output, SVt_PV))
-			croak("cannot use output argument as lvalue");
+		(void) SvUPGRADE(output, SVt_PV);
 
 		/* blowfish_crypt_8bytes(input, SvGROW(output, 8), ks, dir); */
 		/* HP-UX (HP cc) fix below, thanks Addi! */
