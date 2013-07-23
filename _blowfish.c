@@ -28,7 +28,11 @@ typedef unsigned char IntU8 ;
 
 /* Define IntP to be an integer which
    is the same size as a pointer. */
+#ifdef _WIN64
+typedef unsigned long long IntP ;
+#else
 typedef unsigned long IntP ;
+#endif
 
 typedef struct
 {
