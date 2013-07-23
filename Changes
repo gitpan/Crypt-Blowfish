@@ -1,5 +1,8 @@
 Revision history for Perl extension Crypt::Blowfish.
 
+2.14 23 Jul 2013
+	- quick mod to keep META.yml current
+
 2.13 23 Jul 2013
 	- updated SvUPGRADE to a statement
 	- patched for WIN64
